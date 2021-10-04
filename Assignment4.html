@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Assignment 4</title>
+    <style>
+        body {
+            margin-left: 10%;
+            margin-right: 10%;
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <form action="" onsubmit="validate(event)">
+        <fieldset>
+            <legend>Information</legend>
+
+            <div class="form-group pt-3">
+                <label for="InputName">Full Name</label>
+                <input type="text" class="form-control w-50" id="NameId" placeholder="Enter Full Name">
+            </div>
+
+
+
+            <div class="form-group pt-3">
+                <label for="InputPassword">Password</label>
+                <input type="password" class="form-control w-50" name="InputPassword" id="InputPasswordId" minlength="8" maxlength="20" placeholder="Password" title="Password must contain: 8-20 characters atleast 1 Alphabet and 1 Number" required pattern="[a-zA-Z-0-9_,.-:;?!]{8,20}$">
+
+                <div class="form-group">
+                    <label for="ConfirmPassword">Confirm Password</label>
+                    <input type="password" class="form-control w-50" name="ConfirmPassword" id="ConfirmPasswordId" minlength="8" maxlength="20" placeholder="Confirm Password">
+                    <p id="error_message"></p>
+                </div>
+
+
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="Gender">Gender</label>
+                    <input class="form-check-input-50-50" type="radio" name="Gender" id="GenderMaleId" value="Male" required> Male
+                    <input class="form-check-input-50-50" type="radio" name="Gender" id="GenderFemaleId" value="Female"> Female
+                    <input class="form-check-input-50-50" type="radio" name="Gender" id="GenderOtherId" value="Other"> Other
+                </div>
+
+
+
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="Hobbies">Hobbies</label>
+                    <input class="form-check-input-50-50" type="checkbox" value="Music" name="Hobbies" id="MusicId"> Music
+                    <input class="form-check-input-50-50" type="checkbox" value="Sports" name="Hobbies" id="SportsId"> Sports
+                    <input class="form-check-input-50-50" type="checkbox" value="TV" name="Hobbies" id="TVId"> TV
+                    </label>
+                </div>
+
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="birthday">Birthday</label>
+                    <input class="form-control-auto" type="date" id="BirthdayId" name="Birthday">
+                </div>
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="Height">Height</label>
+                    <input class="form-control-auto" type="range" name="Height" id="HeightInputId" min="40" max="300" value="180" oninput="HeightOutputId.value = this.value">
+                    <br>
+                    <input class="form-control-auto w-50" type="number" name="Height" id="HeightOutputId" min="40" max="300" value="180" oninput="HeightInputId.value = this.value">
+
+                </div>
+
+
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="favcolor">Favorite color</label>
+                    <input class="form-control-auto" type="color" id="FavColorId" name="FavColor" value="#ff0000"><br><br>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-text" for="country">Home country</label>
+                    <select class="form-control-auto w-50" name="Country" id="CountryId">
+          <option value="">--Please choose an option--</option>
+          <option value="Finland">Finland</option>
+          <option value="Russia">Russia</option>
+          <option value="Sweden">Sweden</option>
+          <option value="Norway">Norway</option>
+          <option value="Denmark">Denmark</option>
+          <option value="Estonia">Estonia</option>
+      </select>
+                </div>
+
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="Profession">Profession</label>
+                    <input class="form-control-auto w-50" list="profession-list" id="ProfessionId" name="Profession" />
+
+                    <datalist id="profession-list">
+          <option value="Teacher">
+          <option value="Nurse">
+          <option value="Plumber">
+          <option value="Astronaut">
+          <option value="Politician">
+</datalist>
+                </div>
+
+                <div class="form-group pt-3">
+                    <label class="form-text" for="message">Message</label>
+                    <textarea class="form-control" id="MessageId" name="Message" rows="6" cols="60" maxlength="1000" placeholder="Type your message here. Max input 1000 characters." required>
+</textarea>
+                </div>
+
+                <input class="form-control-auto" type="submit" value="Send">
+        </fieldset>
+
+        <output id="result"></output>
+
+    </form>
+    <script src="https://cdn.jsdelivr.net/npm/node-forge@0.7.0/dist/forge.min.js"></script>
+    <script type="text/javascript">
+        function validate(event) {
+            let password1 = document.getElementById("InputPasswordId").value;
+            let password2 = document.getElementById("ConfirmPasswordId").value;
+            if (password1 !== password2) {
+                document.getElementById("error_message").innerText = `Passwords must match.`;
+            } else {
+                document.getElementById("error_message").innerText = "";
+                send_results();
+            }
+            event.preventDefault();
+            return false;
+        }
+
+        function send_results() {
+            let name = document.getElementById("NameId").value;
+            let pw1 = document.getElementById("InputPasswordId").value;
+            let pw2 = document.getElementById("ConfirmPasswordId").value;
+            document.getElementById("result").innerText = `Full name: ${name}
+            Password: ${pw1}
+            Password confirmation: ${pw2}
+            `
+            let gender = document.getElementsByName("Gender");
+            for (i = 0; i < gender.length; i++) {
+                if (gender[i].checked) {
+                    document.getElementById("result").innerText += `Gender: ${gender[i].value}\n`;
+                }
+            }
+            checkhobbies();
+            let bday = document.getElementById("BirthdayId").value;
+            document.getElementById("result").innerText += `Birth date: ${bday}\n`;
+            let height = document.getElementById("HeightInputId").value;
+            document.getElementById("result").innerText += `Height: ${height}\n`;
+            let fav_color = document.getElementById("FavColorId").value;
+            document.getElementById("result").innerText += `Favourite color: ${fav_color}\n`;
+            let selectedCountry = document.getElementById("CountryId");
+            let home_country = selectedCountry.options[selectedCountry.selectedIndex].value;
+            document.getElementById("result").innerText += `Home country: ${home_country}\n`;
+            let profession = document.getElementById("ProfessionId").value;
+            document.getElementById("result").innerText += `Profession: ${profession}\n`;
+            let message = document.getElementById("MessageId").value;
+            document.getElementById("result").innerText += `Message: ${message}\n`;
+
+        }
+
+        function checkhobbies() {
+            let hobbies = ["Music", "Sports", "TV"];
+            let selectedHobbies = [];
+            for (let choice of document.getElementsByName("Hobbies")) {
+                if (choice.checked && hobbies.findIndex((x) => x == choice.value) != -1) {
+                    selectedHobbies.push(choice.value);
+                }
+            }
+            if (selectedHobbies.length) {
+                document.getElementById("result").innerText += `Hobbies: ${selectedHobbies.join(", ")}\n`;
+            }
+        }
+    </script>
+
+
+
+</body>
+
+</html>

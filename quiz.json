@@ -1,0 +1,27 @@
+[{
+        "question": "Who is the President of Finland?",
+        "choices": [
+            { "text": "Hirmuinen Rölli", "value": 0 },
+            { "text": "Uuno Turhapuro", "value": 0 },
+            { "text": "Sauli Niinistö", "value": 1 }
+        ]
+    },
+
+    {
+        "question": "Who is the King of Finland?",
+        "choices": [
+            { "text": "Jari Litmanen", "value": 1 },
+            { "text": "Donald Trump", "value": 0 },
+            { "text": "Vladimir Putin", "value": 0 }
+        ]
+    },
+
+    {
+        "question": "Who is the Master of the Universe?",
+        "choices": [
+            { "text": "Bugs Bunny", "value": 0 },
+            { "text": "He-Man", "value": 1 },
+            { "text": "Jari Sillanpää", "value": 0 }
+        ]
+    }
+]

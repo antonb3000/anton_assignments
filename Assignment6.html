@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Function calculator</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .container {
+            margin: 15px auto;
+            max-width: 800px;
+        }
+
+        form {
+            margin: 5px auto;
+        }
+
+        div {
+            margin: auto 5px;
+        }
+
+        label {
+            margin: 5px;
+            width: 150px;
+            display: inline-block;
+            vertical-align: top;
+        }
+        input {
+            margin: 5px;
+        }
+        #errorMessages {
+            color: red;
+        }
+    </style>
+    <script>
+        var myChart;
+        function validate(event) {
+            event.preventDefault();
+            let myFunc = document.getElementById("myFunction").value;
+            let xStart = parseInt(document.getElementById("startRange").value);
+            let xEnd = parseInt(document.getElementById("endRange").value);
+            let xStep = parseFloat(document.getElementById("xStep").value);
+            let y;
+            let xArray = [];
+            let yArray = [];
+            document.getElementById("errorMessages").innerText = "";
+            if (xStart >= xEnd) {
+                document.getElementById("errorMessages").innerText = `Error: Start of x range can't be more or equal to end of x range`;
+                return false;
+            }
+            document.getElementById("resultsListed").innerHTML = "";
+            try {
+                with (Math) {
+                    for (let i = xStart; i <= xEnd; i = (i + xStep)) {
+                        x = i.toFixed(1);
+                        console.log(x);
+                        y = eval(myFunc);
+                        xArray.push(x);
+                        yArray.push(y);
+                    }
+                }
+            } catch (error) {
+                document.getElementById("errorMessages").innerText = `Syntax error: Invalid function`;
+                return false;
+            }
+            chart(xArray, yArray, myFunc);
+            results(xArray, yArray);
+            return false;
+        }
+
+        function results(xResult, yResult) {
+            for (let i = 0; i < xResult.length; i++)  {
+                x_result = xResult[i].toString();
+                y_result = yResult[i].toString();
+                document.getElementById("resultsListed").innerHTML += `f(${x_result}) = ${y_result}<br>`;
+            }
+        }
+
+
+        function chart(x,y, f) {
+            if (myChart !== undefined) {
+                //Destroy chart, if it already exists
+                myChart.destroy();
+            }
+
+            var ctx = document.getElementById('myChart');
+            myChart = new Chart(ctx, {
+                type: 'line',
+                responsive: true,
+                data: {
+                    labels: x,
+                    datasets: [{
+                        label: f,
+                        data: y,
+                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="userinputs">
+            <form action="" onsubmit="validate(event)">
+                <fieldset>
+                    <legend>Function Calculator</legend>
+                    <div>
+                        <label for="myFunction">Function f(x):</label>
+                        <input type="text" name="myFunction" id="myFunction" size="30" maxlength="30" autofocus
+                            required>
+                    </div>
+                    <div>
+                        <label for="startRange">Start of x range:</label>
+                        <input type="number" name="startRange" id="startRange" value="0" required>
+                    </div>
+                    <div>
+                        <label for="endRange">End of x range:</label>
+                        <input type="number" name="endRange" id="endRange" value="100" required>
+                    </div>
+                    <div>
+                        <label for="xStep">x step:</label>
+                        <input type="number" name="xStep" id="xStep" value="1.0" min="0.1" max="20.0" step="0.1" required>
+                    </div>
+                    <input type="submit" value="Calculate">
+                </fieldset>
+            </form>
+            <p id="errorMessages"></p>
+        </div>
+        <div class="chartBox">
+            <canvas id="myChart">
+                <p>Failed to load chart</p>
+            </canvas>
+        </div>
+        <div class="results">
+            <p id="resultsListed"></p>
+        </div>
+    </div>
+</body>
+
+</html>
